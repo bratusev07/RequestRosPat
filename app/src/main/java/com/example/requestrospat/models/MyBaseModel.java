@@ -1,5 +1,10 @@
 package com.example.requestrospat.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+
 public class MyBaseModel {
     private String q;
     private int limit;
@@ -8,6 +13,7 @@ public class MyBaseModel {
     private String sort;
     private String group_by;
     private int include_facets;
+    private MyFilter filter;
 
     public MyBaseModel(String q) {
         this.q = q;
@@ -17,6 +23,7 @@ public class MyBaseModel {
         post_tag = "</em>";
         sort = "relevance";
         include_facets = 0;
+        filter = new MyFilter();
     }
 
     public void setQ(String q) {
@@ -49,5 +56,33 @@ public class MyBaseModel {
 
     public void setInclude_facets(int include_facets) {
         this.include_facets = include_facets;
+    }
+
+    public void setFilter(MyFilter filter) {
+        this.filter = filter;
+    }
+
+    public static class MyFilter {
+        private TmpObject authors;
+        private TmpObject patent_holders;
+        private TmpObject country;
+        private TmpObject kind;
+
+
+        public void setAuthors(TmpObject authors) {
+            this.authors = authors;
+        }
+
+        public void setPatent_holders(TmpObject patent_holders) {
+            this.patent_holders = patent_holders;
+        }
+
+        public void setCountry(TmpObject country) {
+            this.country = country;
+        }
+
+        public void setKind(TmpObject kind) {
+            this.kind = kind;
+        }
     }
 }
