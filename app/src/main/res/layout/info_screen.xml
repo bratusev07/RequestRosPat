@@ -9,12 +9,12 @@
         android:id="@+id/info_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="Ракета"
+        android:textColor="@color/black"
         android:textSize="22sp"
-        android:text="Ракета"/>
+        android:textStyle="bold" />
 
     <ViewFlipper
         android:id="@+id/flipper"
@@ -28,126 +28,126 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_margin="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
-                        android:text="Правовой статус:"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="Правовой статус:"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/info_status"
-                        android:text="отсутствует"
-                        android:textSize="14sp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginStart="6dp"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="4dp"
+                        android:text="отсутствует"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
 
                     <TextView
-                        android:text="Номер заявки:"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Номер заявки:"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/info_number"
-                        android:text="04944181"
-                        android:textSize="14sp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginStart="6dp"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="4dp"
+                        android:text="04944181"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
-                        android:text="Дата подачи заявки:"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="Дата подачи заявки:"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/info_pushDate"
-                        android:text="1991.06.10"
-                        android:textSize="14sp"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="1991.06.10"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
 
                     <TextView
-                        android:text="Опубликованно:"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Опубликованно:"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/info_postDate"
-                        android:text="1993.09.07"
-                        android:textSize="14sp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginStart="6dp"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="4dp"
+                        android:text="1993.09.07"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
-                android:text="Приоритетные данные:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Приоритетные данные:"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/info_priority"
-                android:text="4944181 1991.06.10 SU\n\nSU19914944181 undefined undefined"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="6dp"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="4dp"
+                android:text="4944181 1991.06.10 SU\n\nSU19914944181 undefined undefined"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text=".."
-                android:textStyle="bold"
+                android:textColor="@color/listItemTitleColor"
                 android:textSize="50sp"
-                android:textColor="@color/listItemTitleColor"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -156,91 +156,117 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="Заявители:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Заявители:"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/info_poster"
-                android:text="Куликов А.И."
-                android:textSize="14sp"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="6dp"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="4dp"
+                android:text="Куликов А.И."
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <TextView
-                android:text="Авторы:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Авторы:"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/info_authors"
-                android:text="Куликов А.И."
-                android:textSize="14sp"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="6dp"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="4dp"
+                android:text="Куликов А.И."
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <TextView
-                android:text="Патентообладатели:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Патентообладатели:"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/info_owner"
-                android:text="Куликов А.И."
-                android:textSize="14sp"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="6dp"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="4dp"
+                android:text="Куликов А.И."
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <TextView
-                android:text="Документы, цитированные в отчёте о поиске:"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Документы, цитированные в отчёте о поиске:"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/info_docs"
-                android:text="Е.Б.Волков. Ракетные двигатели, М.: Во- ениздат, 1969, с.78. Э.С.Педерсен. Атомная энергия в космосе. Атомиздат, М.: 1967, с.74, 146."
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="40dp"
-                android:layout_marginStart="6dp"
+                android:text="Е.Б.Волков. Ракетные двигатели, М.: Во- ениздат, 1969, с.78. Э.С.Педерсен. Атомная энергия в космосе. Атомиздат, М.: 1967, с.74, 146."
                 android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text=".."
-                android:textStyle="bold"
+                android:textColor="@color/listItemTitleColor"
                 android:textSize="50sp"
-                android:textColor="@color/listItemTitleColor"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ViewFlipper>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="Описание"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="40dp">
+
+        <TextView
+            android:id="@+id/info_des"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+    </ScrollView>
 </LinearLayout>

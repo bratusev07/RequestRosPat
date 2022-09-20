@@ -25,4 +25,9 @@ public class MyPriority {
     public String getPublishingOffice() {
         return publishingOffice;
     }
+
+    @Override
+    public String toString() {
+        return number + " " + filingDate + " " + publishingOffice;
+    }
 }

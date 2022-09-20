@@ -3,23 +3,40 @@ package com.example.requestrospat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.requestrospat.models.Biblio;
 import com.example.requestrospat.models.Hit;
+import com.example.requestrospat.models.MyPriority;
 
 public class ItemFragment extends Fragment {
 
     private static final String HIT_KEY = "hit_key";
     private Hit hit;
+    private String color = "#ABD1FF";
     private View root;
+
+    private TextView description;
+    private TextView title;
+    private TextView status;
+    private TextView number;
+    private TextView pushDate;
+    private TextView postDate;
+    private TextView priority;
+    private TextView authors;
+    private TextView poster;
+    private TextView owner;
+    private TextView docs;
 
     public static ItemFragment newInstance(Hit hit) {
         Bundle bundle = new Bundle();
@@ -40,11 +57,71 @@ public class ItemFragment extends Fragment {
             public void onSwipeRight() {
                 flipper.showPrevious();
             }
+
             public void onSwipeLeft() {
                 flipper.showNext();
             }
         });
+
+        findViews();
         return root;
+    }
+
+    private void findViews() {
+        description = root.findViewById(R.id.info_des);
+        title = root.findViewById(R.id.info_title);
+        status = root.findViewById(R.id.info_status);
+        number = root.findViewById(R.id.info_number);
+        pushDate = root.findViewById(R.id.info_pushDate);
+        postDate = root.findViewById(R.id.info_postDate);
+        priority = root.findViewById(R.id.info_priority);
+        authors = root.findViewById(R.id.info_authors);
+        poster = root.findViewById(R.id.info_poster);
+        owner = root.findViewById(R.id.info_owner);
+        docs = root.findViewById(R.id.info_docs);
+        setData();
+    }
+
+    private void setData() {
+        String des = hit.getSnippet().getDescription();
+        String titleString = hit.getBiblio().getRu().getTitle();
+        titleString = titleString.trim();
+        des = "<p>" + des + "</p>";
+        des = des.replace("<em>", "<span style=\"background-color: " + color + ";\">");
+        titleString = titleString.replace("<em>", "<span style=\"background-color: " + color + ";\">");
+        des = des.replace("</em>", "</span>");
+        titleString = titleString.replace("</em>", "</span>");
+        description.setText(Html.fromHtml(des));
+        title.setText(Html.fromHtml(titleString));
+        number.setText(hit.getCommon().getDocumentNumber());
+        postDate.setText(hit.getCommon().getPublicationDate());
+        status.setText("status");
+        pushDate.setText("push date");
+        String priorityString = "";
+        String authorString = "";
+
+        poster.setText(hit.getSnippet().getApplicant());
+        try {
+            for (MyPriority myPriority : hit.getCommon().getPriority()) {
+                String tmp = myPriority.toString().trim();
+                priorityString += tmp + "\n\n";
+            }
+        } catch (Exception e) {
+            priorityString = "undefined";
+        }
+        priority.setText(priorityString);
+        try {
+            for (Biblio.Ru.Inventor inventor : hit.getBiblio().getRu().getInventor()) {
+                String tmp = inventor.getName().trim();
+                authorString += tmp + "\n\n";
+            }
+        } catch (Exception e) {
+            authorString = "undefined";
+        }
+
+        authors.setText(authorString);
+        owner.setText(hit.getSnippet().getPatentee());
+        docs.setText("docs");
     }
 
     public class OnSwipeTouchListener implements View.OnTouchListener {
