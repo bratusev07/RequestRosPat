@@ -44,6 +44,34 @@ public class Classification {
         @SerializedName("class")
         @Expose
         private String _class;
+
+        public String getMainGroup() {
+            return mainGroup;
+        }
+
+        public String getClassificationValue() {
+            return classificationValue;
+        }
+
+        public String getSubgroup() {
+            return subgroup;
+        }
+
+        public String getSubclass() {
+            return subclass;
+        }
+
+        public String getSection() {
+            return section;
+        }
+
+        public String getFullname() {
+            return fullname;
+        }
+
+        public String get_class() {
+            return _class;
+        }
     }
 
     public class Ipc {
@@ -68,5 +96,33 @@ public class Classification {
         @SerializedName("class")
         @Expose
         private String _class;
+
+        public String getMainGroup() {
+            return mainGroup;
+        }
+
+        public String getClassificationValue() {
+            return classificationValue;
+        }
+
+        public String getSubgroup() {
+            return subgroup;
+        }
+
+        public String getSubclass() {
+            return subclass;
+        }
+
+        public String getSection() {
+            return section;
+        }
+
+        public String getFullname() {
+            return fullname;
+        }
+
+        public String get_class() {
+            return _class;
+        }
     }
 }

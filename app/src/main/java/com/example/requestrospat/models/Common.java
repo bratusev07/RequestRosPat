@@ -27,4 +27,32 @@ public class Common {
     @SerializedName("priority")
     @Expose
     private List<MyPriority> priority = null;
+
+    public String getPublishingOffice() {
+        return publishingOffice;
+    }
+
+    public String getDocumentNumber() {
+        return documentNumber;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public String getPublicationDate() {
+        return publicationDate;
+    }
+
+    public MyApplication getApplication() {
+        return application;
+    }
+
+    public Classification getClassification() {
+        return classification;
+    }
+
+    public List<MyPriority> getPriority() {
+        return priority;
+    }
 }

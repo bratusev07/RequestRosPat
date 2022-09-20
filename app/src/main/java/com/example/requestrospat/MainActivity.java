@@ -34,15 +34,15 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.listView);
 
         MyBaseModel.MyFilter filter = new MyBaseModel.MyFilter();
-        MyBaseModel model = new MyBaseModel("Двигатель");
+        MyBaseModel model = new MyBaseModel("Ракета");
 
         ArrayList<String> authors = null;
         ArrayList<String> country = null;
         ArrayList<String> kind = null;
         ArrayList<String> patent_holders = null;
 
-        authors = new ArrayList<>();
-        authors.add("Такеда Кенго (JP)");
+        /*authors = new ArrayList<>();
+        authors.add("Такеда Кенго (JP)");*/
 
         filter.setAuthors(new TmpObject(authors));
         filter.setCountry(new TmpObject(country));
