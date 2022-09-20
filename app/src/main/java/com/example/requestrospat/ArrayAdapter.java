@@ -54,12 +54,12 @@ public class ArrayAdapter extends BaseAdapter {
         author = author.trim();
         title = properCase(title);
 
+        author = author.toUpperCase();
+
         ((TextView) view.findViewById(R.id.title)).setText(title);
-        ((TextView) view.findViewById(R.id.author)).setText("Автор " +
-                properCase(author.split(" ")[0]) + " " + properCase(author.split(" ")[1]) +
-                " " + properCase(author.split(" ")[2]));
-        ((TextView) view.findViewById(R.id.mpk)).setText(hit.getCommon().getClassification().getIpc().get(0).getFullname());
-        ((TextView) view.findViewById(R.id.doc)).setText(hit.getCommon().getPublishingOffice() + " " +
+        ((TextView) view.findViewById(R.id.author)).setText("Автор " + author);
+        ((TextView) view.findViewById(R.id.mpk)).setText("МПК " + hit.getCommon().getClassification().getIpc().get(0).getFullname());
+        ((TextView) view.findViewById(R.id.doc)).setText("Документ " + hit.getCommon().getPublishingOffice() + " " +
                 hit.getCommon().getDocumentNumber() + " " + hit.getCommon().getKind() + " " +
                 hit.getCommon().getPublicationDate());
 

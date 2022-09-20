@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="2dp"
-        android:text="Автор Kuznetsova Ina Valentynivna, UA"
         android:textColor="@color/listItemHeadersColor"
         android:textSize="14sp" />
 
@@ -32,7 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
-        android:text="Документ UA 0000056913 A 2003.05.15"
         android:textColor="@color/listItemHeadersColor"
         android:textSize="14sp" />
 
@@ -42,7 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="1dp"
-        android:text="МПК F03H99/00"
         android:textColor="@color/listItemHeadersColor"
         android:textSize="14sp" />
 

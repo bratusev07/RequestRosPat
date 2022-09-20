@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.requestrospat.models.Hit;
 import com.example.requestrospat.models.MyBaseModel;
 import com.example.requestrospat.models.RosResponse;
 import com.example.requestrospat.models.TmpObject;
@@ -41,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> kind = null;
         ArrayList<String> patent_holders = null;
 
-        /*authors = new ArrayList<>();
-        authors.add("Такеда Кенго (JP)");*/
+        authors = new ArrayList<>();
+        authors.add("Такеда Кенго (JP)");
 
-        filter.setAuthors(new TmpObject(authors));
-        filter.setCountry(new TmpObject(country));
-        filter.setKind(new TmpObject(kind));
-        filter.setPatent_holders(new TmpObject(patent_holders));
+        filter.setAuthors(new TmpObject(null));
+        filter.setCountry(new TmpObject(null));
+        filter.setKind(new TmpObject(null));
+        filter.setPatent_holders(new TmpObject(null));
 
         model.setLimit(100);
         model.setFilter(filter);
@@ -61,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RosResponse> call, Throwable t) {
                 Log.d("resultCode", t.getMessage());
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("myLog", "Click on " + i);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mainScreenActivity_Container, ItemFragment.newInstance((Hit) adapterView.getItemAtPosition(i)))
+                        .addToBackStack("").commit();
             }
         });
     }

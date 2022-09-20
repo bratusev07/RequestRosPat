@@ -3,9 +3,10 @@ package com.example.requestrospat.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Hit {
+public class Hit implements Serializable {
     @SerializedName("common")
     @Expose
     private Common common;
