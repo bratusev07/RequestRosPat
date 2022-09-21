@@ -48,28 +48,42 @@ public class ArrayAdapter extends BaseAdapter {
         }
 
         Hit hit = getItem(position);
-        String title = hit.getBiblio().getRu().getTitle();
-        String author = hit.getBiblio().getRu().getInventor().get(0).getName();
+        String title;
+        try {
+            title = hit.getBiblio().getRu().getTitle();
+        } catch (Exception e) {
+            try {
+                title = hit.getBiblio().getEn().getTitle();
+            } catch (Exception exception) {
+                title = "untitled";
+            }
+        }
+        String author;
+        try {
+            author = hit.getBiblio().getRu().getInventor().get(0).getName();
+        } catch (Exception e) {
+            try {
+                author = hit.getBiblio().getEn().getInventor().get(0).getName();
+            } catch (Exception exception) {
+                author = "unnamed";
+            }
+        }
+        String ipc;
+        try {
+            ipc = hit.getCommon().getClassification().getIpc().get(0).getFullname();
+        } catch (Exception e) {
+            ipc = "untitled";
+        }
         title = title.trim();
         author = author.trim();
-        title = properCase(title);
-
-        author = author.toUpperCase();
 
         ((TextView) view.findViewById(R.id.title)).setText(title);
         ((TextView) view.findViewById(R.id.author)).setText("Автор " + author);
-        ((TextView) view.findViewById(R.id.mpk)).setText("МПК " + hit.getCommon().getClassification().getIpc().get(0).getFullname());
+        ((TextView) view.findViewById(R.id.mpk)).setText("МПК " + ipc);
         ((TextView) view.findViewById(R.id.doc)).setText("Документ " + hit.getCommon().getPublishingOffice() + " " +
                 hit.getCommon().getDocumentNumber() + " " + hit.getCommon().getKind() + " " +
                 hit.getCommon().getPublicationDate());
 
         return view;
-    }
-
-    private String properCase(String inputVal) {
-        if (inputVal.length() == 0) return "";
-        if (inputVal.length() == 1) return inputVal.toUpperCase();
-        return inputVal.substring(0, 1).toUpperCase()
-                + inputVal.substring(1).toLowerCase();
     }
 }
