@@ -15,6 +15,8 @@ import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.requestrospat.models.Biblio;
 import com.example.requestrospat.models.Common;
@@ -23,6 +25,8 @@ import com.example.requestrospat.models.MyPriority;
 import com.example.requestrospat.models.RosResponse;
 import com.example.requestrospat.models.SameModel;
 import com.example.requestrospat.services.NetworkServices;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,6 +63,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
     private TextView owner;
     private TextView docs;
 
+    private RecyclerView sameList;
+
     public static ItemFragment newInstance(Hit hit) {
         Bundle bundle = new Bundle();
         ItemFragment fragment = new ItemFragment();
@@ -72,7 +78,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         hit = (Hit) getArguments().getSerializable(HIT_KEY);
         root = inflater.inflate(R.layout.info_screen, container, false);
-
         ViewFlipper flipper = root.findViewById(R.id.flipper);
         flipper.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeRight() {
@@ -85,10 +90,17 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         });
 
         findViews();
+
+        return root;
+    }
+
+    private void setRecyclerView(){
+        LinearLayoutManager layoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        sameList.setLayoutManager(layoutManager);
+
         Common common = hit.getCommon();
         findTheSame(new SameModel(common.getPublishingOffice() + common.getDocumentNumber() +
                 common.getKind() + "_" + common.getPublicationDate().replace(".", ""), 10));
-        return root;
     }
 
     private void findViews() {
@@ -103,7 +115,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         poster = root.findViewById(R.id.info_poster);
         owner = root.findViewById(R.id.info_owner);
         docs = root.findViewById(R.id.info_docs);
+        sameList = root.findViewById(R.id.recycler_view);
 
+        setRecyclerView();
         authors.setOnClickListener(this);
         owner.setOnClickListener(this);
         docs.setOnClickListener(this);
@@ -205,7 +219,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         NetworkServices.getInstance().getJSONApi().findSame(token, sameModel).enqueue(new Callback<RosResponse>() {
             @Override
             public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
-                Log.d("same", response.body().getHits().size() + "");
+                sameList.setAdapter(new RecyclerCustomAdapter(getContext(), response.body().getHits()));
             }
 
             @Override
