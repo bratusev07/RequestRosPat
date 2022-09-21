@@ -8,18 +8,29 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.requestrospat.models.Hit;
+
+import java.util.Objects;
 
 public class ItemFragment extends Fragment {
 
     private static final String HIT_KEY = "hit_key";
     private Hit hit;
     private View root;
+
+    private ImageView imageView;
+
+    private int i;
+
 
     public static ItemFragment newInstance(Hit hit) {
         Bundle bundle = new Bundle();
@@ -44,6 +55,29 @@ public class ItemFragment extends Fragment {
                 flipper.showNext();
             }
         });
+
+        imageView = root.findViewById(R.id.imageView);
+
+
+
+        imageView.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
+            public void onSwipeLeft() {
+                String url = "https://searchplatform.rospatent.gov.ru/" + hit.getDrawings().get(i++).getUrl();
+                Glide.with(requireContext()).load(url).into(imageView);
+
+                if (i >= hit.getDrawings().size()) i = hit.getDrawings().size() - 1;
+                if (i < 0) i = 0;
+            }
+
+            public void onSwipeRight() {
+                String url = "https://searchplatform.rospatent.gov.ru/" + hit.getDrawings().get(i--).getUrl();
+                Glide.with(requireContext()).load(url).into(imageView);
+
+                if (i >= hit.getDrawings().size()) i = hit.getDrawings().size() - 1;
+                if (i < 0) i = 0;
+            }
+        });
+
         return root;
     }
 
