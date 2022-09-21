@@ -19,12 +19,22 @@ import com.example.requestrospat.models.Biblio;
 import com.example.requestrospat.models.Hit;
 import com.example.requestrospat.models.MyPriority;
 
-public class ItemFragment extends Fragment {
+public class ItemFragment extends Fragment implements View.OnClickListener {
 
     private static final String HIT_KEY = "hit_key";
     private Hit hit;
     private String color = "#ABD1FF";
     private View root;
+
+    private int authorCount = 0;
+    private int docsCount = 0;
+    private int ownerCount = 0;
+    private int priorityCount = 0;
+    private int posterCount = 0;
+
+
+    private String priorityString = "";
+    private String authorString = "";
 
     private TextView description;
     private TextView title;
@@ -79,12 +89,23 @@ public class ItemFragment extends Fragment {
         poster = root.findViewById(R.id.info_poster);
         owner = root.findViewById(R.id.info_owner);
         docs = root.findViewById(R.id.info_docs);
+
+        authors.setOnClickListener(this);
+        owner.setOnClickListener(this);
+        docs.setOnClickListener(this);
+        poster.setOnClickListener(this);
+        priority.setOnClickListener(this);
         setData();
     }
 
     private void setData() {
         String des = hit.getSnippet().getDescription();
-        String titleString = hit.getBiblio().getRu().getTitle();
+        String titleString;
+        try {
+            titleString = hit.getBiblio().getRu().getTitle();
+        } catch (Exception e) {
+            titleString = hit.getBiblio().getEn().getTitle();
+        }
         titleString = titleString.trim();
         des = "<p>" + des + "</p>";
         des = des.replace("<em>", "<span style=\"background-color: " + color + ";\">");
@@ -97,13 +118,12 @@ public class ItemFragment extends Fragment {
         postDate.setText(hit.getCommon().getPublicationDate());
         status.setText("status");
         pushDate.setText("push date");
-        String priorityString = "";
-        String authorString = "";
 
         poster.setText(hit.getSnippet().getApplicant());
         try {
             for (MyPriority myPriority : hit.getCommon().getPriority()) {
                 String tmp = myPriority.toString().trim();
+                priorityCount++;
                 priorityString += tmp + "\n\n";
             }
         } catch (Exception e) {
@@ -113,15 +133,57 @@ public class ItemFragment extends Fragment {
         try {
             for (Biblio.Ru.Inventor inventor : hit.getBiblio().getRu().getInventor()) {
                 String tmp = inventor.getName().trim();
+                authorCount++;
                 authorString += tmp + "\n\n";
             }
         } catch (Exception e) {
-            authorString = "undefined";
+            for (Biblio.En.Inventor_1 inventor : hit.getBiblio().getEn().getInventor()) {
+                String tmp = inventor.getName().trim();
+                authorCount++;
+                authorString += tmp + "\n\n";
+            }
         }
 
         authors.setText(authorString);
         owner.setText(hit.getSnippet().getPatentee());
         docs.setText("docs");
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.info_authors: {
+                switchTextState(authors, authorCount, authorString);
+            }
+            break;
+            case R.id.info_docs: {
+                //switchTextState(docs, docsCount);
+            }
+            break;
+            case R.id.info_owner: {
+                //switchTextState(owner, ownerCount);
+            }
+            break;
+            case R.id.info_priority: {
+                switchTextState(priority, priorityCount, priorityString);
+            }
+            break;
+            case R.id.info_poster: {
+                //switchTextState(poster, posterCount);
+            }
+            break;
+        }
+    }
+
+    private void switchTextState(TextView textView, int maxSize, String fulStr) {
+        if (textView.getMaxLines() == 1 && maxSize > 1) {
+            textView.setMaxLines(maxSize);
+            try {
+                textView.setText(fulStr);
+            } catch (Exception e) {}
+        } else {
+            textView.setMaxLines(1);
+        }
     }
 
     public class OnSwipeTouchListener implements View.OnTouchListener {

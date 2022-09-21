@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class MyBaseModel {
     private String q;
+    private String qn;
     private int limit;
     private int offset;
     private String pre_tag, post_tag;
@@ -24,6 +25,21 @@ public class MyBaseModel {
         sort = "relevance";
         include_facets = 0;
         filter = new MyFilter();
+    }
+
+    public MyBaseModel(String qn, char x) {
+        this.qn = qn;
+        limit = 10;
+        offset = 0;
+        pre_tag = "<em>";
+        post_tag = "</em>";
+        sort = "relevance";
+        include_facets = 0;
+        filter = new MyFilter();
+    }
+
+    public void setQn(String qn) {
+        this.qn = qn;
     }
 
     public void setQ(String q) {
