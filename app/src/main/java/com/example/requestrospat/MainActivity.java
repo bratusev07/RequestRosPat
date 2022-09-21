@@ -1,24 +1,31 @@
 package com.example.requestrospat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.requestrospat.models.Hit;
 import com.example.requestrospat.models.MyBaseModel;
 import com.example.requestrospat.models.RosResponse;
 import com.example.requestrospat.models.TmpObject;
 import com.example.requestrospat.services.NetworkServices;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +47,20 @@ public class MainActivity extends AppCompatActivity {
 
     private MyBaseModel model;
 
+    private Button btnSearch;
+    private Button btnFilter;
+    private EditText etSearch;
+
+    private EditText etAuthor;
+    private EditText etCountry;
+    private EditText etKind;
+    private EditText etPatentHolder;
+
+    private BottomSheetBehavior bottomSheetBehavior;
+    private ConstraintLayout bottomSheet;
+
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,13 +76,14 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> kind = null;
         ArrayList<String> patent_holders = null;
 
-        authors = new ArrayList<>();
-        authors.add("Такеда Кенго (JP)");
+        ListView listView = findViewById(R.id.listView);
+        bottomSheet = findViewById(R.id.bottom_sheet);
 
-        filter.setAuthors(new TmpObject(null));
-        filter.setCountry(new TmpObject(null));
-        filter.setKind(new TmpObject(null));
-        filter.setPatent_holders(new TmpObject(null));
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
+        btnFilter = findViewById(R.id.btnFilter);
+        btnSearch = findViewById(R.id.btnSearch);
+        etSearch = findViewById(R.id.etSearch);
 
         model.setLimit(step);
         model.setFilter(filter);
@@ -102,11 +124,29 @@ public class MainActivity extends AppCompatActivity {
                 listView.setAdapter(new ArrayAdapter(responses, getApplicationContext()));
                 listView.setSelection(listSize);
                 if (response.body().getHits().size() > 0) setOnScroll();
-            }
+        etAuthor = findViewById(R.id.etAuthor);
+        etCountry = findViewById(R.id.etCountry);
+        etKind = findViewById(R.id.etKind);
+        etPatentHolder = findViewById(R.id.etPatentHolder);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onFailure(Call<RosResponse> call, Throwable t) {
-                Log.d("resultCode", t.getMessage());
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("myLog", "Click on " + i);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mainScreenActivity_Container, ItemFragment.newInstance((Hit) adapterView.getItemAtPosition(i)))
+                        .addToBackStack("").commit();
+            }
+        });
+
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
             }
         });
     }
@@ -126,8 +166,62 @@ public class MainActivity extends AppCompatActivity {
                     model.setOffset(offset);
                     findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
                     getList();
+                    
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isEmpty(etSearch)) {
+                    Toast.makeText(getApplicationContext(), "Поле поиска пусто", Toast.LENGTH_LONG).show();
+                } else {
+                    MyBaseModel model = new MyBaseModel(etSearch.getText().toString());
+                    MyBaseModel.MyFilter filter = new MyBaseModel.MyFilter();
+
+                    if (!isEmpty(etAuthor)) {
+                        ArrayList<String> authors = new ArrayList<>();
+                        authors.add(etAuthor.getText().toString());
+                        filter.setAuthors(new TmpObject(authors));
+                    }
+                    if (!isEmpty(etCountry)) {
+                        ArrayList<String> country = new ArrayList<>();
+                        country.add(etCountry.getText().toString().toUpperCase(Locale.ROOT));
+                        filter.setCountry(new TmpObject(country));
+                    }
+                    if (!isEmpty(etKind)) {
+                        ArrayList<String> kind = new ArrayList<>();
+                        kind.add(etKind.getText().toString());
+                        filter.setKind(new TmpObject(kind));
+                    }
+                    if (!isEmpty(etPatentHolder)) {
+                        ArrayList<String> patent_holders = new ArrayList<>();
+                        patent_holders.add(etPatentHolder.getText().toString());
+                        filter.setPatent_holders(new TmpObject(patent_holders));
+                    }
+
+                    model.setLimit(100);
+                    model.setFilter(filter);
+
+                    NetworkServices.getInstance().getJSONApi().getRequest(token, model).enqueue(new Callback<RosResponse>() {
+                        @Override
+                        public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
+                            listView.setAdapter(new ArrayAdapter(response.body().getHits(), getApplicationContext()));
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<RosResponse> call, Throwable t) {
+                            Log.d("resultCode", t.getMessage());
+                        }
+                    });
+
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
             }
         });
+
     }
+
+    private boolean isEmpty(EditText et) {
+        return et.getText().length() == 0;
+    }
+
 }

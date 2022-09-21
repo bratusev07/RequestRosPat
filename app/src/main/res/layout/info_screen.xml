@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -140,6 +142,15 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text=".."
+                android:textStyle="bold"
+                android:textSize="50sp"
+                android:textColor="@color/listItemTitleColor"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -257,4 +268,11 @@
             android:textSize="14sp" />
 
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        app:srcCompat="@drawable/ic_launcher_background" />
 </LinearLayout>
