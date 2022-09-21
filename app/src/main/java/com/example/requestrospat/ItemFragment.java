@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,8 +17,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.requestrospat.models.Biblio;
+import com.example.requestrospat.models.Common;
 import com.example.requestrospat.models.Hit;
 import com.example.requestrospat.models.MyPriority;
+import com.example.requestrospat.models.RosResponse;
+import com.example.requestrospat.models.SameModel;
+import com.example.requestrospat.services.NetworkServices;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ItemFragment extends Fragment implements View.OnClickListener {
 
@@ -25,6 +34,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
     private Hit hit;
     private String color = "#ABD1FF";
     private View root;
+
+    public static final String token = "26a213594e7f4f6e8cd89064d885ea93";
 
     private int authorCount = 0;
     private int docsCount = 0;
@@ -74,6 +85,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         });
 
         findViews();
+        Common common = hit.getCommon();
+        findTheSame(new SameModel(common.getPublishingOffice() + common.getDocumentNumber() +
+                common.getKind() + "_" + common.getPublicationDate().replace(".", ""), 10));
         return root;
     }
 
@@ -180,10 +194,25 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
             textView.setMaxLines(maxSize);
             try {
                 textView.setText(fulStr);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         } else {
             textView.setMaxLines(1);
         }
+    }
+
+    private void findTheSame(SameModel sameModel) {
+        NetworkServices.getInstance().getJSONApi().findSame(token, sameModel).enqueue(new Callback<RosResponse>() {
+            @Override
+            public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
+                Log.d("same", response.body().getHits().size() + "");
+            }
+
+            @Override
+            public void onFailure(Call<RosResponse> call, Throwable t) {
+                Log.d("same", t.getMessage());
+            }
+        });
     }
 
     public class OnSwipeTouchListener implements View.OnTouchListener {
