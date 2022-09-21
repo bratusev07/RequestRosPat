@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
                             listView.setAdapter(new ArrayAdapter(response.body().getHits(), getApplicationContext()));
+
                         }
 
                         @Override
