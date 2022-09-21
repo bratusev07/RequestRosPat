@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private int offset = 0;
     private int step = 30;
+    private ArrayList<Hit> responses;
+    private int listSize = 0;
 
     private String[] sortType = {"relevance", "publication date:asc", "publication date:desc",
             "filing date:asc", "filing date:desc"};
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        responses = new ArrayList<>();
         listView = findViewById(R.id.listView);
 
         MyBaseModel.MyFilter filter = new MyBaseModel.MyFilter();
@@ -90,11 +92,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getList() {
+        listSize = responses.size();
+        if(offset > 0) listSize-=2;
         NetworkServices.getInstance().getJSONApi().getRequest(token, model).enqueue(new Callback<RosResponse>() {
             @Override
             public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
                 findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
-                listView.setAdapter(new ArrayAdapter(response.body().getHits(), getApplicationContext()));
+                responses.addAll(response.body().getHits());
+                listView.setAdapter(new ArrayAdapter(responses, getApplicationContext()));
+                listView.setSelection(listSize);
                 if (response.body().getHits().size() > 0) setOnScroll();
             }
 
@@ -121,13 +127,6 @@ public class MainActivity extends AppCompatActivity {
                     findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
                     getList();
                 }
-
-                /*if (firstVisibleItem == visibleItemCount){
-                    Log.d("scroll", "top");
-                    offset -= step;
-                    model.setOffset(offset);
-                    getList();
-                }*/
             }
         });
     }

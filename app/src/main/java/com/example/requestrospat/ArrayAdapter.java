@@ -52,14 +52,26 @@ public class ArrayAdapter extends BaseAdapter {
         try {
             title = hit.getBiblio().getRu().getTitle();
         } catch (Exception e) {
-            title = hit.getBiblio().getEn().getTitle();
+            try {
+                title = hit.getBiblio().getEn().getTitle();
+            } catch (Exception exception) {
+                title = "untitled";
+            }
         }
         String author;
-        try{author = hit.getBiblio().getRu().getInventor().get(0).getName();}catch (Exception e){
-            author = hit.getBiblio().getEn().getInventor().get(0).getName();
+        try {
+            author = hit.getBiblio().getRu().getInventor().get(0).getName();
+        } catch (Exception e) {
+            try {
+                author = hit.getBiblio().getEn().getInventor().get(0).getName();
+            } catch (Exception exception) {
+                author = "unnamed";
+            }
         }
         String ipc;
-        try{ipc = hit.getCommon().getClassification().getIpc().get(0).getFullname();}catch (Exception e){
+        try {
+            ipc = hit.getCommon().getClassification().getIpc().get(0).getFullname();
+        } catch (Exception e) {
             ipc = "untitled";
         }
         title = title.trim();
