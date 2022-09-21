@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
@@ -55,21 +56,19 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
 
     private TextView description;
     private TextView title;
-    private TextView status;
     private TextView number;
     private TextView pushDate;
     private TextView postDate;
     private TextView priority;
     private TextView authors;
-    private TextView poster;
     private TextView owner;
-    private TextView docs;
 
     private RecyclerView sameList;
     private ImageView imageView;
 
     private int i;
-    
+    private String des;
+
     public static ItemFragment newInstance(Hit hit) {
         Bundle bundle = new Bundle();
         ItemFragment fragment = new ItemFragment();
@@ -83,23 +82,11 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         hit = (Hit) getArguments().getSerializable(HIT_KEY);
         root = inflater.inflate(R.layout.info_screen, container, false);
-        ViewFlipper flipper = root.findViewById(R.id.flipper);
-        flipper.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
-            public void onSwipeRight() {
-                flipper.showPrevious();
-            }
-
-            public void onSwipeLeft() {
-                flipper.showNext();
-            }
-        });
 
         findViews();
         imageView = root.findViewById(R.id.imageView);
 
-
-
-        imageView.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
+/*imageView.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeLeft() {
                 String url = "https://searchplatform.rospatent.gov.ru/" + hit.getDrawings().get(i++).getUrl();
                 Glide.with(requireContext()).load(url).into(imageView);
@@ -115,13 +102,13 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
                 if (i >= hit.getDrawings().size()) i = hit.getDrawings().size() - 1;
                 if (i < 0) i = 0;
             }
-        });
+        });*/
 
         return root;
     }
 
-    private void setRecyclerView(){
-        LinearLayoutManager layoutManager= new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+    private void setRecyclerView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         sameList.setLayoutManager(layoutManager);
 
         Common common = hit.getCommon();
@@ -129,38 +116,56 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
                 common.getKind() + "_" + common.getPublicationDate().replace(".", ""), 10));
     }
 
-    private void findViews() {
+    private void findViews() {/*
+        LinearLayout layout = root.findViewById(R.id.linearLayout2);
+        int height = layout.getHeight();
+        layout.setLayoutParams(new LinearLayout.LayoutParams(layout.getWidth(), 0));*/
         description = root.findViewById(R.id.info_des);
         title = root.findViewById(R.id.info_title);
-        status = root.findViewById(R.id.info_status);
         number = root.findViewById(R.id.info_number);
         pushDate = root.findViewById(R.id.info_pushDate);
         postDate = root.findViewById(R.id.info_postDate);
         priority = root.findViewById(R.id.info_priority);
         authors = root.findViewById(R.id.info_authors);
-        poster = root.findViewById(R.id.info_poster);
         owner = root.findViewById(R.id.info_owner);
-        docs = root.findViewById(R.id.info_docs);
         sameList = root.findViewById(R.id.recycler_view);
+
+/*        root.findViewById(R.id.smaller).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("asd", "cklick");
+                layout.setLayoutParams(new LinearLayout.LayoutParams(layout.getWidth(), 0));
+            }
+        });
+
+        root.findViewById(R.id.bigger).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layout.setLayoutParams(new LinearLayout.LayoutParams(layout.getWidth(), height));
+            }
+        });*/
 
         setRecyclerView();
         authors.setOnClickListener(this);
-        owner.setOnClickListener(this);
-        docs.setOnClickListener(this);
-        poster.setOnClickListener(this);
+        description.setOnClickListener(this);
         priority.setOnClickListener(this);
         setData();
     }
 
     private void setData() {
-        String des = hit.getSnippet().getDescription();
+        des = hit.getSnippet().getDescription();
         String titleString;
         try {
             titleString = hit.getBiblio().getRu().getTitle();
+            titleString = titleString.trim();
         } catch (Exception e) {
-            titleString = hit.getBiblio().getEn().getTitle();
+            try {
+                titleString = hit.getBiblio().getEn().getTitle();
+                titleString = titleString.trim();
+            } catch (Exception exception) {
+                titleString = "untitled";
+            }
         }
-        titleString = titleString.trim();
         des = "<p>" + des + "</p>";
         des = des.replace("<em>", "<span style=\"background-color: " + color + ";\">");
         titleString = titleString.replace("<em>", "<span style=\"background-color: " + color + ";\">");
@@ -170,10 +175,14 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         title.setText(Html.fromHtml(titleString));
         number.setText(hit.getCommon().getDocumentNumber());
         postDate.setText(hit.getCommon().getPublicationDate());
-        status.setText("status");
-        pushDate.setText("push date");
+        String date;
+        try {
+            date = hit.getCommon().getPriority().get(0).getFilingDate();
+        } catch (Exception e) {
+            date = "Отсутствует";
+        }
+        pushDate.setText(date);
 
-        poster.setText(hit.getSnippet().getApplicant());
         try {
             for (MyPriority myPriority : hit.getCommon().getPriority()) {
                 String tmp = myPriority.toString().trim();
@@ -188,42 +197,33 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
             for (Biblio.Ru.Inventor inventor : hit.getBiblio().getRu().getInventor()) {
                 String tmp = inventor.getName().trim();
                 authorCount++;
-                authorString += tmp + "\n\n";
+                authorString += tmp + "\n";
             }
         } catch (Exception e) {
-            for (Biblio.En.Inventor_1 inventor : hit.getBiblio().getEn().getInventor()) {
-                String tmp = inventor.getName().trim();
-                authorCount++;
-                authorString += tmp + "\n\n";
+            try {
+                for (Biblio.En.Inventor_1 inventor : hit.getBiblio().getEn().getInventor()) {
+                    String tmp = inventor.getName().trim();
+                    authorCount++;
+                    authorString += tmp + "\n";
+                }
+            } catch (Exception exception) {
+                authorString = "unnamed";
             }
         }
 
         authors.setText(authorString);
         owner.setText(hit.getSnippet().getPatentee());
-        docs.setText("docs");
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.info_authors: {
-                switchTextState(authors, authorCount, authorString);
-            }
-            break;
-            case R.id.info_docs: {
-                //switchTextState(docs, docsCount);
-            }
-            break;
-            case R.id.info_owner: {
-                //switchTextState(owner, ownerCount);
+                //switchTextState(authors, authorCount, authorString);
             }
             break;
             case R.id.info_priority: {
                 switchTextState(priority, priorityCount, priorityString);
-            }
-            break;
-            case R.id.info_poster: {
-                //switchTextState(poster, posterCount);
             }
             break;
         }
@@ -245,7 +245,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         NetworkServices.getInstance().getJSONApi().findSame(token, sameModel).enqueue(new Callback<RosResponse>() {
             @Override
             public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
-                sameList.setAdapter(new RecyclerCustomAdapter(getContext(), response.body().getHits()));
+                //sameList.setAdapter(new RecyclerCustomAdapter(getContext(), response.body().getHits()));
             }
 
             @Override

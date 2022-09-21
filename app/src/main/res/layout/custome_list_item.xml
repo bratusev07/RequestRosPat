@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
     android:orientation="vertical">
-
 
     <ImageView
         android:id="@+id/imageView2"
@@ -21,6 +22,7 @@
         android:layout_marginStart="10dp"
         android:text="Автоматизация автомата в автома"
         android:textColor="#011734"
+        android:fontFamily="@font/montserrat"
         android:textSize="14sp"
         android:textStyle="bold"
         android:maxLines="1"
@@ -36,6 +38,7 @@
         android:minHeight="22dp"
         android:text="Еникеев И.О."
         android:textColor="#011734"
+        android:fontFamily="@font/montserrat"
         android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -49,6 +52,7 @@
         android:minHeight="22dp"
         android:text="2020101938"
         android:textColor="#011734"
+        android:fontFamily="@font/montserrat"
         android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@+id/author"
         app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -62,6 +66,7 @@
         android:minHeight="22dp"
         android:text="B60R99/00"
         android:textColor="#011734"
+        android:fontFamily="@font/montserrat"
         android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@+id/doc"
         app:layout_constraintTop_toBottomOf="@+id/title" />
