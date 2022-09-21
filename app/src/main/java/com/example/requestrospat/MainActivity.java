@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -65,11 +66,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String input = getIntent().getStringExtra("input");
         responses = new ArrayList<>();
         listView = findViewById(R.id.listView);
 
         MyBaseModel.MyFilter filter = new MyBaseModel.MyFilter();
-        model = new MyBaseModel("Ракета");
+        model = new MyBaseModel(input);
 
         ArrayList<String> authors = null;
         ArrayList<String> country = null;
