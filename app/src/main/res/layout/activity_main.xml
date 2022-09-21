@@ -23,7 +23,7 @@
         </ListView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include layout="@layout/filter_fragment"/>
+    <include layout="@layout/filter_fragment" />
 
     <FrameLayout
         android:id="@+id/mainScreenActivity_Container"
@@ -39,12 +39,11 @@
         android:id="@+id/loadingPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center" >
+        android:gravity="center">
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true" />
     </RelativeLayout>
-</FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

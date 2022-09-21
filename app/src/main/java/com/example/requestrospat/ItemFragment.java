@@ -19,17 +19,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.requestrospat.models.Biblio;
 import com.example.requestrospat.models.Common;
 
-import com.bumptech.glide.Glide;
 import com.example.requestrospat.models.Hit;
 import com.example.requestrospat.models.MyPriority;
 import com.example.requestrospat.models.RosResponse;
 import com.example.requestrospat.models.SameModel;
 import com.example.requestrospat.services.NetworkServices;
 
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;

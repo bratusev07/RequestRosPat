@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getList() {
         listSize = responses.size();
-        if(offset > 0) listSize-=2;
+        if (offset > 0) listSize -= 2;
         NetworkServices.getInstance().getJSONApi().getRequest(token, model).enqueue(new Callback<RosResponse>() {
             @Override
             public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
@@ -124,29 +124,36 @@ public class MainActivity extends AppCompatActivity {
                 listView.setAdapter(new ArrayAdapter(responses, getApplicationContext()));
                 listView.setSelection(listSize);
                 if (response.body().getHits().size() > 0) setOnScroll();
-        etAuthor = findViewById(R.id.etAuthor);
-        etCountry = findViewById(R.id.etCountry);
-        etKind = findViewById(R.id.etKind);
-        etPatentHolder = findViewById(R.id.etPatentHolder);
+                etAuthor = findViewById(R.id.etAuthor);
+                etCountry = findViewById(R.id.etCountry);
+                etKind = findViewById(R.id.etKind);
+                etPatentHolder = findViewById(R.id.etPatentHolder);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("myLog", "Click on " + i);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.mainScreenActivity_Container, ItemFragment.newInstance((Hit) adapterView.getItemAtPosition(i)))
-                        .addToBackStack("").commit();
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Log.d("myLog", "Click on " + i);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.mainScreenActivity_Container, ItemFragment.newInstance((Hit) adapterView.getItemAtPosition(i)))
+                                .addToBackStack("").commit();
+                    }
+                });
+
+                btnFilter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        } else {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
+                    }
+                });
             }
-        });
 
-        btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
+            public void onFailure(Call<RosResponse> call, Throwable t) {
+
             }
         });
     }
@@ -166,62 +173,64 @@ public class MainActivity extends AppCompatActivity {
                     model.setOffset(offset);
                     findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
                     getList();
-                    
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isEmpty(etSearch)) {
-                    Toast.makeText(getApplicationContext(), "Поле поиска пусто", Toast.LENGTH_LONG).show();
-                } else {
-                    MyBaseModel model = new MyBaseModel(etSearch.getText().toString());
-                    MyBaseModel.MyFilter filter = new MyBaseModel.MyFilter();
 
-                    if (!isEmpty(etAuthor)) {
-                        ArrayList<String> authors = new ArrayList<>();
-                        authors.add(etAuthor.getText().toString());
-                        filter.setAuthors(new TmpObject(authors));
-                    }
-                    if (!isEmpty(etCountry)) {
-                        ArrayList<String> country = new ArrayList<>();
-                        country.add(etCountry.getText().toString().toUpperCase(Locale.ROOT));
-                        filter.setCountry(new TmpObject(country));
-                    }
-                    if (!isEmpty(etKind)) {
-                        ArrayList<String> kind = new ArrayList<>();
-                        kind.add(etKind.getText().toString());
-                        filter.setKind(new TmpObject(kind));
-                    }
-                    if (!isEmpty(etPatentHolder)) {
-                        ArrayList<String> patent_holders = new ArrayList<>();
-                        patent_holders.add(etPatentHolder.getText().toString());
-                        filter.setPatent_holders(new TmpObject(patent_holders));
-                    }
-
-                    model.setLimit(100);
-                    model.setFilter(filter);
-
-                    NetworkServices.getInstance().getJSONApi().getRequest(token, model).enqueue(new Callback<RosResponse>() {
+                    btnSearch.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
-                            listView.setAdapter(new ArrayAdapter(response.body().getHits(), getApplicationContext()));
+                        public void onClick(View view) {
+                            if (isEmpty(etSearch)) {
+                                Toast.makeText(getApplicationContext(), "Поле поиска пусто", Toast.LENGTH_LONG).show();
+                            } else {
+                                MyBaseModel model = new MyBaseModel(etSearch.getText().toString());
+                                MyBaseModel.MyFilter filter = new MyBaseModel.MyFilter();
 
-                        }
+                                if (!isEmpty(etAuthor)) {
+                                    ArrayList<String> authors = new ArrayList<>();
+                                    authors.add(etAuthor.getText().toString());
+                                    filter.setAuthors(new TmpObject(authors));
+                                }
+                                if (!isEmpty(etCountry)) {
+                                    ArrayList<String> country = new ArrayList<>();
+                                    country.add(etCountry.getText().toString().toUpperCase(Locale.ROOT));
+                                    filter.setCountry(new TmpObject(country));
+                                }
+                                if (!isEmpty(etKind)) {
+                                    ArrayList<String> kind = new ArrayList<>();
+                                    kind.add(etKind.getText().toString());
+                                    filter.setKind(new TmpObject(kind));
+                                }
+                                if (!isEmpty(etPatentHolder)) {
+                                    ArrayList<String> patent_holders = new ArrayList<>();
+                                    patent_holders.add(etPatentHolder.getText().toString());
+                                    filter.setPatent_holders(new TmpObject(patent_holders));
+                                }
 
-                        @Override
-                        public void onFailure(Call<RosResponse> call, Throwable t) {
-                            Log.d("resultCode", t.getMessage());
+                                model.setLimit(100);
+                                model.setFilter(filter);
+
+                                NetworkServices.getInstance().getJSONApi().getRequest(token, model).enqueue(new Callback<RosResponse>() {
+                                    @Override
+                                    public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
+                                        listView.setAdapter(new ArrayAdapter(response.body().getHits(), getApplicationContext()));
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<RosResponse> call, Throwable t) {
+                                        Log.d("resultCode", t.getMessage());
+                                    }
+                                });
+
+                                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            }
                         }
                     });
 
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
             }
         });
-
     }
 
     private boolean isEmpty(EditText et) {
         return et.getText().length() == 0;
     }
-
 }
