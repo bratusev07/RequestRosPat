@@ -59,6 +59,8 @@ public class SearchActivity extends AppCompatActivity {
     private EditText etDateLeft;
     private EditText etDateRight;
 
+    View v;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +112,7 @@ public class SearchActivity extends AppCompatActivity {
                 listView.setAdapter(new ArrayAdapter(responses, getApplicationContext()));
                 listView.setSelection(listSize);
                 if (response.body().getHits().size() > 0) setOnScroll();
-                View v = findViewById(R.id.filterFields);
+                v = findViewById(R.id.filterFields);
                 v.setVisibility(View.GONE);
 
                 etAuthor = v.findViewById(R.id.etAuthor);
@@ -155,6 +157,9 @@ public class SearchActivity extends AppCompatActivity {
                     getList();
 
                     btnSearch.setOnClickListener(view -> {
+
+                        v.setVisibility(View.GONE);
+
                         if (isEmpty(etSearch)) {
                             Toast.makeText(getApplicationContext(), "Поле поиска пусто", Toast.LENGTH_LONG).show();
                         } else {

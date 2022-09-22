@@ -86,7 +86,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         findViews();
         imageView = root.findViewById(R.id.imageView);
 
-        String url = "https://searchplatform.rospatent.gov.ru/" + hit.getDrawings().get(i++).getUrl();
+        String url = "https://searchplatform.rospatent.gov.ru/" + hit.getDrawings().get(0).getUrl();
         Glide.with(requireContext()).load(url).into(imageView);
 
         imageView.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
