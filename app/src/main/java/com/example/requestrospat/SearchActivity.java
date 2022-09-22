@@ -66,9 +66,9 @@ public class SearchActivity extends AppCompatActivity {
         etAuthor = v.findViewById(R.id.etAuthor);
         etCountry = v.findViewById(R.id.etCountry);
         etKind = v.findViewById(R.id.etKind);
-        etPatentHolder = v.findViewById(R.id.etPatentHolder);
+        etPatentHolder = v.findViewById(R.id.etPatentHolder);/*
         etDateLeft = v.findViewById(R.id.etDateLeft);
-        etDateRight = v.findViewById(R.id.etDateRight);
+        etDateRight = v.findViewById(R.id.etDateRight);*/
 
         btnFilter.setOnClickListener(this::showPopupMenu);
 
