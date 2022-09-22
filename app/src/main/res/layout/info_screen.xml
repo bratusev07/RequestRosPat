@@ -303,25 +303,6 @@ RU20060144883U undefined undefined"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
                 <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:enabled="false"
-                    android:fontFamily="@font/montserrat"
-                    android:text="Похожие"
-                    android:textColor="#011734"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false" />
-
-                <TextView
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -341,6 +322,25 @@ RU20060144883U undefined undefined"
                     android:fontFamily="@font/montserrat"
                     android:textColor="#011734"
                     android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="12dp"
+                    android:enabled="false"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Похожие"
+                    android:textColor="#011734"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" />
 
             </LinearLayout>
 
