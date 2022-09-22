@@ -86,7 +86,10 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         findViews();
         imageView = root.findViewById(R.id.imageView);
 
-/*imageView.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
+        String url = "https://searchplatform.rospatent.gov.ru/" + hit.getDrawings().get(i++).getUrl();
+        Glide.with(requireContext()).load(url).into(imageView);
+
+        imageView.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeLeft() {
                 String url = "https://searchplatform.rospatent.gov.ru/" + hit.getDrawings().get(i++).getUrl();
                 Glide.with(requireContext()).load(url).into(imageView);
@@ -102,7 +105,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
                 if (i >= hit.getDrawings().size()) i = hit.getDrawings().size() - 1;
                 if (i < 0) i = 0;
             }
-        });*/
+        });
 
         return root;
     }
@@ -116,10 +119,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
                 common.getKind() + "_" + common.getPublicationDate().replace(".", ""), 10));
     }
 
-    private void findViews() {/*
-        LinearLayout layout = root.findViewById(R.id.linearLayout2);
-        int height = layout.getHeight();
-        layout.setLayoutParams(new LinearLayout.LayoutParams(layout.getWidth(), 0));*/
+    private void findViews() {
         description = root.findViewById(R.id.info_des);
         title = root.findViewById(R.id.info_title);
         number = root.findViewById(R.id.info_number);
@@ -129,21 +129,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         authors = root.findViewById(R.id.info_authors);
         owner = root.findViewById(R.id.info_owner);
         sameList = root.findViewById(R.id.recycler_view);
-
-/*        root.findViewById(R.id.smaller).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("asd", "cklick");
-                layout.setLayoutParams(new LinearLayout.LayoutParams(layout.getWidth(), 0));
-            }
-        });
-
-        root.findViewById(R.id.bigger).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layout.setLayoutParams(new LinearLayout.LayoutParams(layout.getWidth(), height));
-            }
-        });*/
 
         setRecyclerView();
         authors.setOnClickListener(this);
@@ -219,7 +204,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.info_authors: {
-                //switchTextState(authors, authorCount, authorString);
+                switchTextState(authors, authorCount, authorString);
             }
             break;
             case R.id.info_priority: {
@@ -245,7 +230,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         NetworkServices.getInstance().getJSONApi().findSame(token, sameModel).enqueue(new Callback<RosResponse>() {
             @Override
             public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
-                //sameList.setAdapter(new RecyclerCustomAdapter(getContext(), response.body().getHits()));
+                sameList.setAdapter(new RecyclerCustomAdapter(getContext(), response.body().getHits()));
             }
 
             @Override
