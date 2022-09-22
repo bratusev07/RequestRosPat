@@ -51,19 +51,23 @@ public class ArrayAdapter extends BaseAdapter {
         String title;
         try {
             title = hit.getBiblio().getRu().getTitle();
+            title = title.trim();
         } catch (Exception e) {
             try {
                 title = hit.getBiblio().getEn().getTitle();
+                title = title.trim();
             } catch (Exception exception) {
                 title = "untitled";
             }
         }
         String author;
         try {
-            author = hit.getBiblio().getRu().getInventor().get(0).getName();
+            author = parseAuthor(hit.getBiblio().getRu().getInventor().get(0).getName());
+            author = author.trim();
         } catch (Exception e) {
             try {
-                author = hit.getBiblio().getEn().getInventor().get(0).getName();
+                author = parseAuthor(hit.getBiblio().getEn().getInventor().get(0).getName());
+                author = author.trim();
             } catch (Exception exception) {
                 author = "unnamed";
             }
@@ -74,16 +78,26 @@ public class ArrayAdapter extends BaseAdapter {
         } catch (Exception e) {
             ipc = "untitled";
         }
-        title = title.trim();
-        author = author.trim();
 
         ((TextView) view.findViewById(R.id.title)).setText(title);
-        ((TextView) view.findViewById(R.id.author)).setText("Автор " + author);
-        ((TextView) view.findViewById(R.id.mpk)).setText("МПК " + ipc);
-        ((TextView) view.findViewById(R.id.doc)).setText("Документ " + hit.getCommon().getPublishingOffice() + " " +
-                hit.getCommon().getDocumentNumber() + " " + hit.getCommon().getKind() + " " +
-                hit.getCommon().getPublicationDate());
+        ((TextView) view.findViewById(R.id.author)).setText(author);
+        ((TextView) view.findViewById(R.id.mpk)).setText(ipc);
+        ((TextView) view.findViewById(R.id.doc)).setText(hit.getCommon().getDocumentNumber());
 
         return view;
+    }
+
+    private String parseAuthor(String author){
+        String[] tmp = author.split(" ");
+        String result = tmp[0];
+        try {
+            result += " " + tmp[1].charAt(0) + ".";
+        }catch (Exception e){}
+
+        try {
+            if(tmp[2].charAt(0) != '(') result += " " + tmp[2].charAt(0) + ".";
+        }catch (Exception e){}
+
+        return result;
     }
 }
