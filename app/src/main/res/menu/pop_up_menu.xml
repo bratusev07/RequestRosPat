@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+        <item
+            android:id="@+id/menu1"
+            android:icon="@mipmap/ic_launcher"
+            android:title="По релевантности"/>
+        <item
+            android:id="@+id/menu2"
+            android:title="По дате публикации Б"/>
+        <item
+            android:id="@+id/menu3"
+            android:title="По дате публикации М"/>
+        <item
+            android:id="@+id/menu4"
+            android:title="По дате подачи заявки Б"/>
+        <item
+            android:id="@+id/menu5"
+            android:title="По дате подачи заявки М">
+        </item>
+
+</menu>
