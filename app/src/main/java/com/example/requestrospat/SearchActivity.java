@@ -3,11 +3,14 @@ package com.example.requestrospat;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -67,8 +70,139 @@ public class SearchActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.search_layout);
 
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         etSearch = findViewById(R.id.etSearch);
         btnSearch = findViewById(R.id.btnSearch);
+
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    if (etSearch.getText().toString().length() == 0) {
+                        Toast.makeText(getApplicationContext(), "Введите запрос", Toast.LENGTH_SHORT).show();
+                    } else {
+                        v.setVisibility(View.GONE);
+                        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+
+                        if (isEmpty(etSearch)) {
+                            Toast.makeText(getApplicationContext(), "Поле поиска пусто", Toast.LENGTH_LONG).show();
+                        } else {
+                            MyBaseModel model = new MyBaseModel(etSearch.getText().toString());
+                            MyBaseModel.MyFilter filter = new MyBaseModel.MyFilter();
+
+                            if (!isEmpty(etAuthor)) {
+                                ArrayList<String> authors = new ArrayList<>();
+                                authors.add(etAuthor.getText().toString());
+                                filter.setAuthors(new TmpObject(authors));
+                            }
+                            if (!isEmpty(etCountry)) {
+                                ArrayList<String> country = new ArrayList<>();
+                                country.add(etCountry.getText().toString().toUpperCase(Locale.ROOT));
+                                filter.setCountry(new TmpObject(country));
+                            }
+                            if (!isEmpty(etKind)) {
+                                ArrayList<String> kind = new ArrayList<>();
+                                kind.add(etKind.getText().toString());
+                                filter.setKind(new TmpObject(kind));
+                            }
+                            if (!isEmpty(etPatentHolder)) {
+                                ArrayList<String> patent_holders = new ArrayList<>();
+                                patent_holders.add(etPatentHolder.getText().toString());
+                                filter.setPatent_holders(new TmpObject(patent_holders));
+                            }
+                             /*if (!isEmpty(etDateLeft)) {
+                                 ArrayList<String> date_left = new ArrayList<>();
+                                 date_left.add(etDateLeft.getText().toString());
+                                 filter.setPatent_holders(new TmpObject(date_left));
+                             }
+                             if (!isEmpty(etDateRight)) {
+                                 ArrayList<String> date_right = new ArrayList<>();
+                                 date_right.add(etDateRight.getText().toString());
+                                 filter.setPatent_holders(new TmpObject(date_right));
+                             }*/
+
+                            model.setLimit(step);
+                            model.setFilter(filter);
+
+                            NetworkServices.getInstance().getJSONApi().getRequest(token, model).enqueue(new Callback<RosResponse>() {
+                                @Override
+                                public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
+                                    listView.setAdapter(new ArrayAdapter(response.body().getHits(), getApplicationContext()));
+                                    findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
+                                }
+
+                                @Override
+                                public void onFailure(Call<RosResponse> call, Throwable t) {
+                                    Log.d("resultCode", t.getMessage());
+                                }
+                            });
+
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+        btnSearch.setOnClickListener(view -> {
+            v.setVisibility(View.GONE);
+            findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+
+            if (isEmpty(etSearch)) {
+                Toast.makeText(getApplicationContext(), "Поле поиска пусто", Toast.LENGTH_LONG).show();
+            } else {
+                MyBaseModel model = new MyBaseModel(etSearch.getText().toString());
+                MyBaseModel.MyFilter filter = new MyBaseModel.MyFilter();
+
+                if (!isEmpty(etAuthor)) {
+                    ArrayList<String> authors = new ArrayList<>();
+                    authors.add(etAuthor.getText().toString());
+                    filter.setAuthors(new TmpObject(authors));
+                }
+                if (!isEmpty(etCountry)) {
+                    ArrayList<String> country = new ArrayList<>();
+                    country.add(etCountry.getText().toString().toUpperCase(Locale.ROOT));
+                    filter.setCountry(new TmpObject(country));
+                }
+                if (!isEmpty(etKind)) {
+                    ArrayList<String> kind = new ArrayList<>();
+                    kind.add(etKind.getText().toString());
+                    filter.setKind(new TmpObject(kind));
+                }
+                if (!isEmpty(etPatentHolder)) {
+                    ArrayList<String> patent_holders = new ArrayList<>();
+                    patent_holders.add(etPatentHolder.getText().toString());
+                    filter.setPatent_holders(new TmpObject(patent_holders));
+                }
+                             /*if (!isEmpty(etDateLeft)) {
+                                 ArrayList<String> date_left = new ArrayList<>();
+                                 date_left.add(etDateLeft.getText().toString());
+                                 filter.setPatent_holders(new TmpObject(date_left));
+                             }
+                             if (!isEmpty(etDateRight)) {
+                                 ArrayList<String> date_right = new ArrayList<>();
+                                 date_right.add(etDateRight.getText().toString());
+                                 filter.setPatent_holders(new TmpObject(date_right));
+                             }*/
+
+                model.setLimit(step);
+                model.setFilter(filter);
+
+                NetworkServices.getInstance().getJSONApi().getRequest(token, model).enqueue(new Callback<RosResponse>() {
+                    @Override
+                    public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
+                        listView.setAdapter(new ArrayAdapter(response.body().getHits(), getApplicationContext()));
+                        findViewById(R.id.loadingPanel).setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onFailure(Call<RosResponse> call, Throwable t) {
+                        Log.d("resultCode", t.getMessage());
+                    }
+                });
+
+            }
+        });
         btnFilter = findViewById(R.id.btnFilter);
 
         String input = getIntent().getStringExtra("input");
@@ -155,67 +289,6 @@ public class SearchActivity extends AppCompatActivity {
                     model.setOffset(offset);
                     findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
                     getList();
-
-                    btnSearch.setOnClickListener(view -> {
-
-                        v.setVisibility(View.GONE);
-
-                        if (isEmpty(etSearch)) {
-                            Toast.makeText(getApplicationContext(), "Поле поиска пусто", Toast.LENGTH_LONG).show();
-                        } else {
-                            MyBaseModel model = new MyBaseModel(etSearch.getText().toString());
-                            MyBaseModel.MyFilter filter = new MyBaseModel.MyFilter();
-
-                            if (!isEmpty(etAuthor)) {
-                                ArrayList<String> authors = new ArrayList<>();
-                                authors.add(etAuthor.getText().toString());
-                                filter.setAuthors(new TmpObject(authors));
-                            }
-                            if (!isEmpty(etCountry)) {
-                                ArrayList<String> country = new ArrayList<>();
-                                country.add(etCountry.getText().toString().toUpperCase(Locale.ROOT));
-                                filter.setCountry(new TmpObject(country));
-                            }
-                            if (!isEmpty(etKind)) {
-                                ArrayList<String> kind = new ArrayList<>();
-                                kind.add(etKind.getText().toString());
-                                filter.setKind(new TmpObject(kind));
-                            }
-                            if (!isEmpty(etPatentHolder)) {
-                                ArrayList<String> patent_holders = new ArrayList<>();
-                                patent_holders.add(etPatentHolder.getText().toString());
-                                filter.setPatent_holders(new TmpObject(patent_holders));
-                            }
-                             /*if (!isEmpty(etDateLeft)) {
-                                 ArrayList<String> date_left = new ArrayList<>();
-                                 date_left.add(etDateLeft.getText().toString());
-                                 filter.setPatent_holders(new TmpObject(date_left));
-                             }
-                             if (!isEmpty(etDateRight)) {
-                                 ArrayList<String> date_right = new ArrayList<>();
-                                 date_right.add(etDateRight.getText().toString());
-                                 filter.setPatent_holders(new TmpObject(date_right));
-                             }*/
-
-                            model.setLimit(step);
-                            model.setFilter(filter);
-
-                            NetworkServices.getInstance().getJSONApi().getRequest(token, model).enqueue(new Callback<RosResponse>() {
-                                @Override
-                                public void onResponse(Call<RosResponse> call, Response<RosResponse> response) {
-                                    listView.setAdapter(new ArrayAdapter(response.body().getHits(), getApplicationContext()));
-
-                                }
-
-                                @Override
-                                public void onFailure(Call<RosResponse> call, Throwable t) {
-                                    Log.d("resultCode", t.getMessage());
-                                }
-                            });
-
-                        }
-                    });
-
                 }
             }
         });

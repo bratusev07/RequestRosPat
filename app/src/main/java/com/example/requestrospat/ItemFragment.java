@@ -116,7 +116,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
 
         Common common = hit.getCommon();
         findTheSame(new SameModel(common.getPublishingOffice() + common.getDocumentNumber() +
-                common.getKind() + "_" + common.getPublicationDate().replace(".", ""), 10));
+                common.getKind() + "_" + common.getPublicationDate().replace(".", ""), 4));
     }
 
     private void findViews() {
