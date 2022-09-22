@@ -62,6 +62,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
     private TextView priority;
     private TextView authors;
     private TextView owner;
+    private TextView mpk;
 
     private RecyclerView sameList;
     private ImageView imageView;
@@ -128,6 +129,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         priority = root.findViewById(R.id.info_priority);
         authors = root.findViewById(R.id.info_authors);
         owner = root.findViewById(R.id.info_owner);
+        mpk = root.findViewById(R.id.info_mpk);
         sameList = root.findViewById(R.id.recycler_view);
 
         setRecyclerView();
@@ -138,6 +140,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setData() {
+        mpk.setText(hit.getCommon().getClassification().getIpc().get(0).getFullname());
         des = hit.getSnippet().getDescription();
         String titleString;
         try {
