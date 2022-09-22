@@ -1,3 +1,4 @@
+/*
 package com.example.requestrospat;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -86,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
-        btnFilter = findViewById(R.id.btnFilter);
-        btnSearch = findViewById(R.id.btnSearch);
         etSearch = findViewById(R.id.etSearch);
 
         model.setLimit(step);
@@ -238,4 +237,4 @@ public class MainActivity extends AppCompatActivity {
     private boolean isEmpty(EditText et) {
         return et.getText().length() == 0;
     }
-}
+}*/

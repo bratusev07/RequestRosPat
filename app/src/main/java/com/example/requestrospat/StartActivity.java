@@ -30,7 +30,7 @@ public class StartActivity extends AppCompatActivity {
                     if (input.getText().toString().length() == 0) {
                         Toast.makeText(getApplicationContext(), "Введите запрос", Toast.LENGTH_SHORT).show();
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                         intent.putExtra("input", input.getText().toString());
                         startActivity(intent);
                     }
@@ -47,7 +47,7 @@ public class StartActivity extends AppCompatActivity {
                 if (search_input.length() == 0) {
                     Toast.makeText(getApplicationContext(), "Введите запрос", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                     intent.putExtra("input", input.getText().toString());
                     startActivity(intent);
                 }

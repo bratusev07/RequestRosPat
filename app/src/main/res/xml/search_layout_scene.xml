@@ -25,6 +25,18 @@
             android:rotation="0"
             motion:layout_constraintTop_toTopOf="@+id/btnExtSearch"
             android:layout_marginTop="1dp" />
+        <Constraint android:id="@+id/listView" />
+        <Constraint
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintDimensionRatio="7:1"
+            android:layout_marginTop="30dp"
+            android:id="@+id/etSearch" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
