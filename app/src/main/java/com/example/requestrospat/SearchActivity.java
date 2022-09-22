@@ -303,20 +303,35 @@ public class SearchActivity extends AppCompatActivity {
         PopupMenu popupMenu = new PopupMenu(this, v);
         popupMenu.inflate(R.menu.pop_up_menu);
 
-        popupMenu
-                .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @SuppressLint("NonConstantResourceId")
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.menu1:
-
+                                model = new MyBaseModel(etSearch.getText().toString());
+                                model.setSort("relevance");
+                                getList();
                                 return true;
                             case R.id.menu2:
-
+                                model = new MyBaseModel(etSearch.getText().toString());
+                                model.setOffset(5);
+                                getList();
                                 return true;
                             case R.id.menu3:
-
+                                model = new MyBaseModel(etSearch.getText().toString());
+                                model.setOffset(24);
+                                getList();
+                                return true;
+                            case R.id.menu4:
+                                model = new MyBaseModel(etSearch.getText().toString());
+                                model.setOffset(37);
+                                getList();
+                                return true;
+                            case R.id.menu5:
+                                model = new MyBaseModel(etSearch.getText().toString());
+                                model.setOffset(11);
+                                getList();
                                 return true;
                             default:
                                 return false;
